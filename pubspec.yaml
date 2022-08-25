@@ -41,7 +41,12 @@ dependencies:
   #geocoding:
   permission_handler:
   image_picker:
-
+  image_gallery_saver:
+  dio:
+  fluttertoast:
+  path_provider:
+  gallery_saver:
+  scrollable_positioned_list:
 
 
 
