@@ -155,18 +155,18 @@ class _MyFirstFrom extends State<FormsValidation>{
   Widget _ListViewUI(){
 
     dataList.clear();
-    dataList.add(MyData(1, "", "Text", "Power Cut"));
-    dataList.add(MyData(2, "", "DropDown", "Charger"));
-    dataList.add(MyData(3, "", "Text", "New Battery"));
-    dataList.add(MyData(4, "", "Text", "Car"));
-    dataList.add(MyData(5, "", "Text", "Mobile"));
-    dataList.add(MyData(6, "", "DropDown", "IPhone"));
-    dataList.add(MyData(7, "", "Text", "Bag"));
-    dataList.add(MyData(8, "", "Text", "AC"));
-    dataList.add(MyData(9, "", "Text", "Owen"));
-    dataList.add(MyData(10, "", "DropDown", "Dustbin"));
-    dataList.add(MyData(11, "", "Text", "Local Area Clear"));
-    dataList.add(MyData(12, "", "Text", "Pen"));
+    dataList.add(MyData(1, "", "Text", "Power Cut",""));
+    dataList.add(MyData(2, "", "DropDown", "Charger","1,2,3,4,5"));
+    dataList.add(MyData(3, "", "Text", "New Battery",""));
+    dataList.add(MyData(4, "", "Text", "Car",""));
+    dataList.add(MyData(5, "", "Text", "Mobile",""));
+    dataList.add(MyData(6, "", "DropDown", "IPhone","Cake,Iec-Cream,Falooda"));
+    dataList.add(MyData(7, "", "Text", "Bag",""));
+    dataList.add(MyData(8, "", "Text", "AC",""));
+    dataList.add(MyData(9, "", "Text", "Owen",""));
+    dataList.add(MyData(10, "", "DropDown", "Dustbin","Shirt,T-Shirt,Jacket"));
+    dataList.add(MyData(11, "", "Text", "Local Area Clear",""));
+    dataList.add(MyData(12, "", "Text", "Pen",""));
 
     return Form(
       key: _formCheckListKey,
@@ -201,29 +201,86 @@ class _MyFirstFrom extends State<FormsValidation>{
     return Card(
       child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(18.0),
-            child: TextFormField(
-              initialValue: dataList[index].inputValue,
-              decoration: InputDecoration(labelText: dataList[index].labelValue),
-              validator: (value){
-                if(value == null || value.isEmpty){
-                  return dataList[index].labelValue;
-                }
-                return null;
-              },
-              onSaved: (value) {
-                dataList[index].inputValue =  value!;
-              },
-              onChanged: (text){
-                dataList[index].inputValue =  text;
-              },
-            ),
-          )
+          if(dataList[index].labelType == "text")
+            _buildLabelTypeText(index)
+          else if(dataList[index].labelType == "DropDown")
+            _buildLabelTypeDropDown(index)
         ],
       ),
     );
   }
+
+  _buildLabelTypeDropDown(index){
+    List<String> listmylist = ["5","a","rt"];
+    return DropdownButton<String>(
+      items: <String>['A', 'B', 'C', 'D'].map((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
+      onChanged: (_) {},
+    );
+
+      // return Padding(
+      //   padding: EdgeInsets.all(18.0),
+      //   child: DropdownButton<String>(
+      //     value: dataList[index].inputValue,
+      //     items: _createDropDownList(listmylist),
+      //     onChanged: (value) => dataList[index].inputValue = value!,
+      //   ),
+      // );
+
+  }
+
+  List<DropdownMenuItem<String>> _createDropDownList(commaDelimitedList){
+    print(commaDelimitedList);
+     var list = commaDelimitedList.split(",");
+      List<DropdownMenuItem<String>> dropdownItems = [];
+
+      for (String currency in list){
+        var newItem = DropdownMenuItem(
+          child: Text(currency),
+          value: currency,
+        );
+        dropdownItems.add(newItem);
+      }
+      return dropdownItems;
+  }
+
+  // return DropdownButton(
+  // items: snapGenre.data.genres.map((map) => DropdownMenuItem(
+  // child: Text(map.name),
+  // value: map.id,
+  // ),
+  // ).toList(),
+  // );
+
+  _buildLabelTypeText(index){
+    return Padding(
+      padding: const EdgeInsets.all(18.0),
+      child: Visibility(
+        visible: dataList[index].labelType == "text",
+        child: TextFormField(
+          initialValue: dataList[index].inputValue,
+          decoration: InputDecoration(labelText: dataList[index].labelValue),
+          validator: (value){
+            if(value == null || value.isEmpty){
+              return dataList[index].labelValue;
+            }
+            return null;
+          },
+          onSaved: (value) {
+            dataList[index].inputValue =  value!;
+          },
+          onChanged: (text){
+            dataList[index].inputValue =  text;
+          },
+        ),
+      ),
+    );
+  }
+
   Future _scrollToIndex() async {
     var position = 0;
     for(int i = 0; i < dataList.length; i++){
@@ -261,6 +318,7 @@ class MyData{
   String inputValue ="";
   String labelType = "";
   String labelValue = "";
+  String dropDownList = "";
 
-  MyData(this.id, this.inputValue, this.labelType, this.labelValue);
+  MyData(this.id, this.inputValue, this.labelType, this.labelValue, this.dropDownList);
 }
