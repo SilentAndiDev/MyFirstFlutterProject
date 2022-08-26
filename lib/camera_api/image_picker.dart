@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../api_web_services/customer_id_details_service.dart';
+
 class AppPicker extends StatefulWidget {
   const AppPicker({Key? key}) : super(key: key);
   @override
@@ -83,6 +85,10 @@ class _AppPickerState extends State<AppPicker> {
 
               ],
             ),
+            ElevatedButton(onPressed: (){
+              CustomerIdDetailsService cd = CustomerIdDetailsService();
+              cd.asyncFileUpload("MyNameIsRaj",(File(imageFile!.path)));
+            }, child: const Text("Upload File"))
           ],
 
         ),
