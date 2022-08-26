@@ -43,15 +43,22 @@
 	<false/>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
     <true/>
+    <!--photos permission-->
     <key>NSPhotoLibraryUsageDescription</key>
     <string>To take an avatar photo</string>
+    <!--camera permission-->
 	<key>NSCameraUsageDescription</key>
     <string>To choose an avatar</string>
+    <!--microphone permission-->
     <key>NSMicrophoneUsageDescription</key>
     <string>To take an avatar photo</string>
+    <!--location permission-->
     <key>NSLocationAlwaysUsageDescription</key>
     <string>Needed to access location</string>
     <key>NSLocationWhenInUseUsageDescription</key>
+    <string>Needed to access location</string>
+    <!--add photo permission-->
+    <key>NSPhotoLibraryAddUsageDescription</key>
     <string>Needed to access location</string>
 </dict>
 </plist>

@@ -197,11 +197,13 @@ class _MyFirstFrom extends State<FormsValidation>{
     );
   }
 
+  var test;
+
   _ViewItem(index){
     return Card(
       child: Column(
         children: [
-          if(dataList[index].labelType == "text")
+          if(dataList[index].labelType == "Text")
             _buildLabelTypeText(index)
           else if(dataList[index].labelType == "DropDown")
             _buildLabelTypeDropDown(index)
@@ -210,31 +212,46 @@ class _MyFirstFrom extends State<FormsValidation>{
     );
   }
 
-  _buildLabelTypeDropDown(index){
-    List<String> listmylist = ["5","a","rt"];
-    return DropdownButton<String>(
-      items: <String>['A', 'B', 'C', 'D'].map((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
-        );
-      }).toList(),
-      onChanged: (_) {},
-    );
+  var newvalue;
 
-      // return Padding(
-      //   padding: EdgeInsets.all(18.0),
-      //   child: DropdownButton<String>(
-      //     value: dataList[index].inputValue,
-      //     items: _createDropDownList(listmylist),
-      //     onChanged: (value) => dataList[index].inputValue = value!,
-      //   ),
-      // );
+  _buildLabelTypeDropDown(index){
+      return Padding(
+        padding: EdgeInsets.all(18.0),
+        child: DropdownButtonFormField<String>(
+          isExpanded: true,
+          items: _createDropDownList(dataList[index].dropDownList),
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          decoration: InputDecoration(labelText : dataList[index].labelValue),
+          value: dataList[index].inputValue.isEmpty ? null : dataList[index].inputValue  ,
+          validator: (value){
+            if(value == null || value.isEmpty || value == dataList[index].labelValue ){
+              return dataList[index].labelValue;
+            }
+            return null;
+          },
+          onChanged: (value){
+            if(value != null && value.isNotEmpty) {
+              dataList[index].inputValue = value.toString();
+            }
+          }    ,
+
+        ),
+      );
 
   }
 
+  /*DropdownButton<String>(
+  items: <String>['A', 'B', 'C', 'D'].map((String value) {
+  return DropdownMenuItem<String>(
+  value: value,
+  child: Text(value),
+  );
+  }).toList(),
+  onChanged: (_) {},
+  );*/
+
   List<DropdownMenuItem<String>> _createDropDownList(commaDelimitedList){
-    print(commaDelimitedList);
+    
      var list = commaDelimitedList.split(",");
       List<DropdownMenuItem<String>> dropdownItems = [];
 
@@ -245,7 +262,7 @@ class _MyFirstFrom extends State<FormsValidation>{
         );
         dropdownItems.add(newItem);
       }
-      return dropdownItems;
+      return dropdownItems.toList();
   }
 
   // return DropdownButton(
@@ -259,10 +276,11 @@ class _MyFirstFrom extends State<FormsValidation>{
   _buildLabelTypeText(index){
     return Padding(
       padding: const EdgeInsets.all(18.0),
-      child: Visibility(
-        visible: dataList[index].labelType == "text",
+
+
         child: TextFormField(
           initialValue: dataList[index].inputValue,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
           decoration: InputDecoration(labelText: dataList[index].labelValue),
           validator: (value){
             if(value == null || value.isEmpty){
@@ -277,7 +295,7 @@ class _MyFirstFrom extends State<FormsValidation>{
             dataList[index].inputValue =  text;
           },
         ),
-      ),
+
     );
   }
 
@@ -286,6 +304,14 @@ class _MyFirstFrom extends State<FormsValidation>{
     for(int i = 0; i < dataList.length; i++){
       if(dataList[i].inputValue.isEmpty){
         position = i;
+        if(dataList[i].labelType == "DropDown" ){
+          if(dataList[i].inputValue == dataList[i].labelValue){
+            await itemScrollController.scrollTo(
+                index: position,
+                duration: const Duration(seconds: 2),
+                curve: Curves.easeInOutCubic);
+          }
+        }
         await itemScrollController.scrollTo(
             index: position,
             duration: const Duration(seconds: 2),
@@ -308,6 +334,9 @@ class _MyFirstFrom extends State<FormsValidation>{
       return;
     }*/
   }
+
+
+
 
 }
 

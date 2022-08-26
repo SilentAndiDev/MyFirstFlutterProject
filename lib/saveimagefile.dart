@@ -59,7 +59,11 @@ class _MyHomePageState extends State<MyHomePage> {
       } else {
         if (await _requestPermission(Permission.photos)) {
           directory = await getTemporaryDirectory();
-        } else {
+        }
+        else if(Platform.isIOS){
+          directory = await getTemporaryDirectory();
+        }
+        else {
           return false;
         }
       }
@@ -140,7 +144,8 @@ class _MyHomePageState extends State<MyHomePage> {
             label: Text(
               "Download Video",
               style: TextStyle(color: Colors.white, fontSize: 25),
-            )),
+            )
+        ),
       ),
     );
   }
